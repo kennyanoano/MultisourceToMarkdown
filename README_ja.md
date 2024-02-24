@@ -22,7 +22,7 @@ MultiSourceMDは、HTML、PDF、TXT、docx、mel、py、xlsx、xmlなどの複�
 
 ## 使用方法
 
-`src`フォルダ内にある`main.py`を実行してウィンドウを表示します。
+MultiSourceToMakdown.batを実行
 
 ## 主な機能
 

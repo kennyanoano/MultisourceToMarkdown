@@ -14,7 +14,7 @@ MultiSourceMD is an AI-assisted tool that converts various source formats into M
 
 ## Usage
 
-Execute `main.py` in the src folder.
+Execute `MultiSourceToMakdown.bat`
 
 ## Features
 
