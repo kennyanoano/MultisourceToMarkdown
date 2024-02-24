@@ -1,0 +1,8 @@
+html2text
+markdownify
+pdfminer
+python-docx
+openpyxl
+requests
+beautifulsoup4
+tkinterdnd2

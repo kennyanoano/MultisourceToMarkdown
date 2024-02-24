@@ -1,0 +1,15 @@
+memo/
+sourcerule.txt
+sources/*
+!sources/.gitkeep
+.cursorignore
+converted_md/*
+!converted_md/.gitkeep
+__pycache__
+*.log
+build/
+dist/
+main.spec
+.venv
+.idea
+TEST.py
