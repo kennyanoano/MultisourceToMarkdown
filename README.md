@@ -1,34 +1,64 @@
-# MultiSourceMD
+# MultiSourceMDについて
 
-MultiSourceMD is an AI-assisted tool that converts various source formats into Markdown (MD). It supports formats like HTML, PDF, TXT, docx, mel, py, xlsx, and xml. The tool also compresses MD files into ZIP format and allows post-processing rules to clean the MD files.
+MultiSourceMDは、HTML、PDF、TXT、docx、mel、py、xlsx、xmlなどの複数のソースフォーマットからMarkdown(MD)形式への変換をサポートするツールです。このツールを使用することで、MDファイルをZIP形式で圧縮し、AIモデルなどに提供する資料を簡単に作成できます。また、生成されたMDファイルの後処理ルールを設定し、不要な内容を削除することができます。
 
-## Supported Formats
+## 対応フォーマット
 
-- HTML, PDF, TXT, docx, mel, py, xlsx, xml
+- https～（一部のみ）
+- HTML
+- PDF
+- TXT
+- docx
+- mel
+- py
+- xlsx
+- xml
+- https-Confluence (初回のみ、認証用のメアド/APIキー/ドメイン名が必要/入力後再起動が必要)
+- https-Jira (初回のみ、認証用のメアド/APIキー/ドメイン名が必要/入力後再起動が必要)
 
-## Setup
+## セットアップ方法
 
-1. Ensure Python is installed.
-2. Clone the repository.
-3. Run `pip install -r requirements.txt` in the project directory.
+1. Pythonがシステムにインストールされていることを確認してください。
+2. リポジトリをローカルマシンにクローンします。
+3. プロジェクトディレクトリで`pip install -r requirements.txt`を実行し、必要な依存関係をインストールします。
 
-## Usage
+## 使用方法
 
-Execute `MultiSourceToMakdown.bat`
+MultiSourceToMakdown.batを実行
 
-## Features
+## 主な機能
 
-- **Source Management**: Add, edit, and convert sources (files or URLs) to MD.
-- **Cleansing Rules**: Set rules to clean text before conversion, such as replacing strings, removing whitespace/tags, and more.
+- **ソースの追加と編集**: ソース（HTML、PDF、TXTファイルまたはURL）を追加し、必要に応じて編集できます。追加はセルに記入して追加する方法と、ファイルをドラッグアンドドロップする方法があります。リストから選択すると編集モードになります。
+- **変換**: 追加したソースをMarkdown形式に変換します。選択して個別変換、選択をしない状態だと全変換。
+- **クレンジングルールの管理**: 変換前にテキストをクリーニングするためのルールを追加、編集、適用できます。
 
-## Modifying
+## クレンジング処理
 
-- To add conversion formats, modify `KAno_convert_script.py` and add `format_to_md.py`.
-- To add cleansing rules, modify `cleansing_rules.py`.
+- **ルールの追加**: 「Cleansing Rules」ボタンをクリックしてウィンドウを開き、「Add Rule」ボタンをクリックして新しいルールを追加します。
+- **ルールの適用**: ルールタイプ、条件、アクションを入力し、「Apply ALL」ボタンをクリックしてルールを適用します。選択して実行でルールが一つ適用、何も選択しないとルール適用です。
+フォルダに大してクレンジングしたいときは Tab1-3を押してください
 
-## License
+## クレンジング機能紹介
 
-MIT License
+- `replace`: 特定の文字列を別の文字列に置換します。変換したい文字を一つ目の欄に、変換後の文字を二つ目の欄に入れます
+- `remove_whitespace`: 余分な空白を削除します。欄への記入は不要
+- `remove_tag`: 指定されたタグとその内容を削除します。
+- `remove_before`: 指定された文字列より前を削除します。一つ目の欄に文字列を記入し二つ目の欄は空欄でＯＫ
+- `remove_after`: 指定された文字列より後を削除します。一つ目の欄に文字列を記入し二つ目の欄は空欄でＯＫ
+- `remove_until_newline`: 指定された文字列が見つかったらそこから改行までを削除します。一つ目の欄に文字列を記入し二つ目の欄は空欄でＯＫ
 
+## タブ機能
 
-[日本語版はこちら](README_ja.md)
+MultiSourceMDでは、複数のソースを管理するためにタブを使用します。各タブは異なるソースグループを表し、整理と変換プロセスを簡単にします。
+
+## 改造したいとき
+
+- **変換フォーマットの追加**: `KAno_convert_script.py`を修正し、`format_to_md.py`を追加します。
+- **クレンジングルールの追加**: `cleansing_rules.py`を修正します。
+- コンフルエンスを認証なしで使うならif "atlassian.net/～をコメントアウト
+
+## やりたいこと
+
+- インターネットのサイトでうまく読み込めないものに対応する。
+
+[Read this in English](README_en.md)
