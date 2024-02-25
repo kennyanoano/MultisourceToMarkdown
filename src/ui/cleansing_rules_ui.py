@@ -40,16 +40,20 @@ class CleansingRulesUI:
         self.delete_button = ttk.Button(self.frame, text='Delete Rule', command=self.delete_rule)
         self.delete_button.pack(side=tk.LEFT, padx=(0, 10))
 
-        self.apply_button = ttk.Button(self.frame, text='Apply ALL', command=self.apply_rule)
+        # Apply ALL ボタン
+        self.apply_button = tk.Button(self.frame, text='Apply ALL', command=self.apply_rule, bg='#4CAF50', fg='white')
         self.apply_button.pack(side=tk.LEFT)
 
-        self.apply_to_tab1_button = ttk.Button(self.frame, text='Tab1', command=lambda: self.apply_rule_to_tab(1), width=6)
+        # Tab1 ボタン
+        self.apply_to_tab1_button = tk.Button(self.frame, text='Tab1', command=lambda: self.apply_rule_to_tab(1), width=6, bg='#4CAF50', fg='white')
         self.apply_to_tab1_button.pack(side=tk.LEFT)
 
-        self.apply_to_tab2_button = ttk.Button(self.frame, text='Tab2', command=lambda: self.apply_rule_to_tab(2), width=6)
+        # Tab2 ボタン
+        self.apply_to_tab2_button = tk.Button(self.frame, text='Tab2', command=lambda: self.apply_rule_to_tab(2), width=6, bg='#4CAF50', fg='white')
         self.apply_to_tab2_button.pack(side=tk.LEFT)
 
-        self.apply_to_tab3_button = ttk.Button(self.frame, text='Tab 3', command=lambda: self.apply_rule_to_tab(3), width=6)
+        # Tab 3 ボタン
+        self.apply_to_tab3_button = tk.Button(self.frame, text='Tab 3', command=lambda: self.apply_rule_to_tab(3), width=6, bg='#4CAF50', fg='white')
         self.apply_to_tab3_button.pack(side=tk.LEFT)
 
         self.update_rules_list()
