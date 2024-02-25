@@ -62,8 +62,9 @@ def KAno_convert_script(file_path, file_type, tab_index):
 
     if file_path.startswith("https://"):  # URLの場合
         if "atlassian.net/wiki/" in file_path:  # Atlassian ConfluenceのURLの場合
-            # confluence_to_mdモジュールをインポートして変換関数を呼び出す
-            from converter.confluence_to_md import convert_confluence_to_md
+            # 環境変数の設定を確認し、必要に応じて設定する
+            from converter.confluence_to_md import set_env_variables, convert_confluence_to_md
+            set_env_variables()  # 環境変数を設定する関数を呼び出す
             markdown_content, title = convert_confluence_to_md(file_path)
         else:
             markdown_content, title = KAno_convert_web_to_md(file_path)  # その他のURLの場合、既存の関数を使用
