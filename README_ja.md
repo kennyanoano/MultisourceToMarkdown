@@ -13,6 +13,7 @@ MultiSourceMDは、HTML、PDF、TXT、docx、mel、py、xlsx、xmlなどの複�
 - py
 - xlsx
 - xml
+- https-Confluence (認証用のメアド/APIキー/ドメイン名が必要)
 
 ## セットアップ方法
 
@@ -53,6 +54,7 @@ MultiSourceMDでは、複数のソースを管理するためにタブを使用�
 
 - **変換フォーマットの追加**: `KAno_convert_script.py`を修正し、`format_to_md.py`を追加します。
 - **クレンジングルールの追加**: `cleansing_rules.py`を修正します。
+- コンフルエンスを認証なしで使うならif "atlassian.net/～をコメントアウト
 
 ## やりたいこと
 
