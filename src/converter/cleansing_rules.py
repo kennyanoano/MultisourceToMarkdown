@@ -11,10 +11,11 @@ class CleansingRule:
 rules = [
     CleansingRule('replace', 'http://', 'https://'),
     CleansingRule('remove_whitespace', None, None),
-    CleansingRule('remove_tag', '<script>', '</script>'),  # ここにカンマを追加
-    CleansingRule('remove_before', 'SpecialMojiretsu', 'None'),  # ここにカンマを追加
+    CleansingRule('remove_tag', '<script>', '</script>'),
+    CleansingRule('remove_before', 'SpecialMojiretsu', 'None'),
     CleansingRule('remove_after', 'SpecialMojiretsu2', 'None'),
-    CleansingRule('remove_until_newline', 'SpecialMojiretsu2', 'None')   
+    CleansingRule('remove_until_newline', 'SpecialMojiretsu2', 'None'),
+    CleansingRule('remove_empty_lines', None, None)  # 空っぽの行を削除するルールを追加
 ]
 
 def apply_cleansing_rule(rule, text):
@@ -31,10 +32,12 @@ def apply_cleansing_rule(rule, text):
     elif rule.rule_type == 'remove_after':
         return text.split(rule.condition, 1)[0] if rule.condition in text else text
     elif rule.rule_type == 'remove_until_newline':
-        # 特定の文字列から改行までを削除する
         import re
         pattern = re.escape(rule.condition) + '.*?\\n'
         return re.sub(pattern, '', text, flags=re.DOTALL)
+    elif rule.rule_type == 'remove_empty_lines':
+        import re
+        return re.sub(r'^\s*$\n', '', text, flags=re.MULTILINE)  # 空っぽの行を削除
     else:
         return text
 
