@@ -66,6 +66,11 @@ def KAno_convert_script(file_path, file_type, tab_index):
             from converter.confluence_to_md import set_env_variables, convert_confluence_to_md
             set_env_variables()  # 環境変数を設定する関数を呼び出す
             markdown_content, title = convert_confluence_to_md(file_path)
+        elif "atlassian.net/jira/" in file_path:  # Atlassian jiraのURLの場合
+            from converter.confluence_to_md import set_env_variables
+            set_env_variables()  # 環境変数を設定する関数を呼び出す
+            from converter.jira_to_md import convert_jira_to_md
+            markdown_content, title = convert_jira_to_md(file_path)
         else:
             markdown_content, title = KAno_convert_web_to_md(file_path)  # その他のURLの場合、既存の関数を使用
         with open(output_file_path, "w", encoding="utf-8") as md_file:

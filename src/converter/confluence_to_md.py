@@ -31,8 +31,7 @@ def set_env_variables():
     user_email = os.environ.get('MKZ_USER_EMAIL')
     api_key = os.environ.get('MKZ_API_KEY')
     confluence_domain = os.environ.get('MKZ_CONFLUENCE_DOMAIN')
-    print ("デバッグ")
-    print("MKZ_USER_EMAIL:", os.environ.get('MKZ_USER_EMAIL'))
+
 
     if not user_email or not api_key or not confluence_domain:
         user_email = simpledialog.askstring("Input", "Please enter your email address:", parent=root)
@@ -94,4 +93,3 @@ def convert_confluence_to_md(file_path):
 
 if __name__ == "__main__":
     set_env_variables()
-

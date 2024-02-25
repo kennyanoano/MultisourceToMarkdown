@@ -13,7 +13,8 @@ MultiSourceMDは、HTML、PDF、TXT、docx、mel、py、xlsx、xmlなどの複�
 - py
 - xlsx
 - xml
-- https-Confluence (認証用のメアド/APIキー/ドメイン名が必要/入力後再起動が必要)
+- https-Confluence (初回のみ、認証用のメアド/APIキー/ドメイン名が必要/入力後再起動が必要)
+- https-Jira (初回のみ、認証用のメアド/APIキー/ドメイン名が必要/入力後再起動が必要)
 
 ## セットアップ方法
 
