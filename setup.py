@@ -8,7 +8,7 @@ setup(
     name='MultiSourceToMarkdown',
     version='1.0.0',
     author='kenny_anoano',
-    author_email='your.email@example.com',
+    author_email='129825517+kennyanoano@users.noreply.github.com',
     description='A tool to convert various source formats into Markdown',
     packages=find_packages(),
     install_requires=requirements,
