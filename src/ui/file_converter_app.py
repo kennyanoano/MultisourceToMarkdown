@@ -4,23 +4,23 @@ import sys
 import os
 import tkinter.simpledialog
 import json
-import ctypes #ウィンドウズの高DPI対応らしいけどよくわからない試してみないと…
+import ctypes #
 from tkinterdnd2 import DND_FILES, TkinterDnD
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(True)
 except AttributeError:
-    pass  # 非Windows環境では無視
+    pass  #
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from converter.KAno_convert_script import KAno_convert_script as KAno_run_conversion
 from ui.cleansing_rules_ui import CleansingRulesUI
-from ui.source_manager import SourceManager  # SourceManagerのインポート
+from ui.source_manager import SourceManager  #
 class FileConverterApp:
     def __init__(self):
         self.root = TkinterDnD.Tk()
         self.root.title("File Converter")
         style = ttk.Style()
-        style.configure('TNotebook.Tab', padding=[20, 8])  # [左右のパディング, 上下のパディング]
+        style.configure('TNotebook.Tab', padding=[20, 8])
         self.notebook = ttk.Notebook(self.root)
         config = self.load_config()
         tab_names = config.get("tab_names", ["Tab 1", "Tab 2", "Tab 3"])
@@ -81,7 +81,7 @@ class FileConverterApp:
     def open_md_folder(self):
         import subprocess
         import platform
-        tab_index = self.notebook.index("current")  # 現在選択されているタブのインデックスを取得
+        tab_index = self.notebook.index("current")  #
         folder_path = os.path.join(os.path.dirname(parent_dir), "converted_md", str(tab_index))
         print (folder_path)
         if platform.system() == "Windows":
@@ -158,7 +158,7 @@ class FileConverterApp:
             save_button = entries["save_button"]
             save_button.config(text="Finish Edit", command=lambda: self.KAno_update_source(tab_index))
         except IndexError:
-            print("編集するソースが選択されていません。")
+            print("not selected")
     def delete_source(self):
         tab_index = self.notebook.index("current")
         current_listbox = self.source_listboxes[tab_index]
@@ -186,7 +186,7 @@ class FileConverterApp:
             save_button = entries["save_button"]
             save_button.config(text="Update Source", command=lambda: self.KAno_update_source(tab_index))
         except IndexError:
-            print("編集するソースが選択されていません。")
+            print("not selected")
     def KAno_update_source(self, tab_index):
         current_listbox = self.source_listboxes[tab_index]
         original_source_name = current_listbox.get(tk.ACTIVE)  # アクティブなリストアイテム（編集前の名前）を取得
@@ -204,11 +204,11 @@ class FileConverterApp:
         current_listbox = self.source_listboxes[tab_index]
         items = current_listbox.get(0, tk.END)
         if not items:
-            print("変換するソースがありません。")
+            print("no source")
             return
         try:
             selected_items = current_listbox.curselection()
-            if not selected_items:  # 何も選択されていない場合、全てのアイテムを処理
+            if not selected_items:  #
                 selected_items = range(len(items))
             for i in selected_items:
                 source_name = current_listbox.get(i)
@@ -216,14 +216,14 @@ class FileConverterApp:
                 if source_path:
                     if source_path.startswith('"') and source_path.endswith('"'):
                         source_path = source_path[1:-1]
-                    if source_path.startswith("https://"):  # URLの場合
+                    if source_path.startswith("https://"):  #
                         KAno_run_conversion(source_path, "web", tab_index)  # 'web'として扱う
                     else:
                         KAno_run_conversion(source_path, source_path.split('.')[-1], tab_index)
                 else:
-                    print(f"選択されたソースのパスが見つかりません: {source_name}")
+                    print(f"path not found: {source_name}")
         except IndexError:
-            print("変換するソースが選択されていません。")
+            print("not selected")
 
     def update_source_list(self, tab_index):
         try:
@@ -234,7 +234,7 @@ class FileConverterApp:
                 source_listbox.insert('end', name)
         except KeyError as e:
             print(f"Error: No source listbox found for tab index '{tab_index}'. This tab may have been renamed or removed.")
-            print(f"KeyError: {e}")  # KeyErrorの詳細を表示
+            print(f"KeyError: {e}")  #
     def open_cleansing_rules_ui(self):
         new_window = tk.Toplevel(self.root)
         new_window.title("Cleansing Rules")
@@ -244,7 +244,7 @@ class FileConverterApp:
         for f in files:
             self.KAno_add_dropped_source(f)
     def KAno_add_dropped_source(self, file_path):
-        tab_index = self.notebook.index("current")  # 現在選択されているタブのインデックスを取得
+        tab_index = self.notebook.index("current")  #
         source_name = os.path.basename(file_path)
         self.source_manager.add_or_update_source(tab_index, source_name, file_path)
         self.update_source_list(tab_index)

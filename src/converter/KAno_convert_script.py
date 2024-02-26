@@ -8,21 +8,21 @@ def KAno_convert_script(file_path, file_type, tab_index):
     sourcetextfolder = os.path.join(os.getcwd(), "sources")
     memo_file_path = os.path.join(sourcetextfolder, f"Tab {tab_index + 1}.txt")
 
-    memo_name = ""  # メモ名の初期化
+    memo_name = ""  # Initialize memo name
     with open(memo_file_path, "r", encoding="utf-8") as memo_file:
         for line in memo_file:
-            parts = line.strip().split(',')  # 行をカンマで分割
+            parts = line.strip().split(',')  # Split the line by comma
             if len(parts) == 2 and file_path.strip() in parts[1].strip():
-                memo_name = parts[0]  # メモ名を取得
-                break  # 該当する行が見つかったらループを抜ける
-    if not memo_name:  # メモ名が見つからなかった場合
-        print(f"ファイルパス {file_path} に対応するメモ名が見つかりませんでした。")
-        return  # 処理を終了
+                memo_name = parts[0]  # Get the memo name
+                break  # Exit the loop if the corresponding line is found
+    if not memo_name:  # If the memo name is not found
+        print(f"Memo name not found for file path {file_path}.")
+        return  # End the process
 
-    # メモ名を安全なファイル名に変換
+    # Convert memo name to a safe file name
     safe_memo_name = memo_name.replace("?", "_").replace("/", "_")
 
-    # 出力ファイルパスをメモ名に基づいて設定
+    # Set the output file path based on the memo name
     output_file_path = os.path.join(output_dir, f"{safe_memo_name}.md")
 
     conversion_dict = {
@@ -85,24 +85,21 @@ def KAno_convert_script(file_path, file_type, tab_index):
         with open(output_file_path, "w", encoding="utf-8") as md_file:
             md_file.write(markdown_content)
     else:
-        print("サポートされていないファイルタイプです。")
-    print("変換処理が完了しました。")
+        print("type not supported")
+    print("done")
 
 def KAno_convert_web_to_md(url):
     import requests
     from bs4 import BeautifulSoup  # BeautifulSoupのインポート
     from html2text import html2text
 
-    # URLからHTMLを取得。文字化けを防ぐために、レスポンスのエンコーディングを明示的に指定します。
     response = requests.get(url)
     response.encoding = response.apparent_encoding  # 追加: 文字化け対策
     html_content = response.text
 
-    # BeautifulSoupを使用してHTMLを解析し、タイトルを取得
     soup = BeautifulSoup(html_content, 'html.parser')
     title = soup.title.string.replace(" ", "_").replace("/", "_") if soup.title else "default_title"
 
-    # HTMLをMarkdownに変換
     markdown_content = html2text(html_content)
 
     return markdown_content, title  # Markdown内容とタイトルを返す

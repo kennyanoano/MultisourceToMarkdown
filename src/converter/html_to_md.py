@@ -2,27 +2,23 @@ import html2text
 import os
 
 def convert_html_to_md(html_file_path):
-    # ファイルの存在を確認
     if not os.path.exists(html_file_path):
-        print(f"指定されたファイルが見つかりません: {html_file_path}")
+        print(f"File not found: {html_file_path}")
         return None
 
     try:
-        # AIによるとあまりいい処理ではない・HTMLファイルを読み込む際に、'utf-8'以外のエンコーディングも考慮する必要がある場合、
-        # まずは'utf-8'で試し、UnicodeDecodeErrorが発生したら'cp932' (Windowsの場合) など、
-        # 他のエンコーディングで試すようにします。
+        # Attempt to read the HTML file using 'utf-8' encoding first, then try other encodings like 'cp932' (for Windows) if UnicodeDecodeError occurs.
         try:
             with open(html_file_path, 'r', encoding='utf-8') as file:
                 html_content = file.read()
         except UnicodeDecodeError:
-            with open(html_file_path, 'r', encoding='cp932') as file:  # 日本でよく使われるエンコーディング
+            with open(html_file_path, 'r', encoding='cp932') as file:  # Common encoding in Japan
                 html_content = file.read()
 
-        # html2textを使用してHTMLをMarkdownに変換
         text_maker = html2text.HTML2Text()
         text_maker.ignore_links = False
         markdown_content = text_maker.handle(html_content)
         return markdown_content
     except Exception as e:
-        print(f"ファイルの読み込みまたは変換中にエラーが発生しました: {e}")
+        print(f"Error occurred during file reading or conversion: {e}")
         return None
