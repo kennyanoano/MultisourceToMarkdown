@@ -11,5 +11,7 @@ build/
 dist/
 main.spec
 .venv
+venv
 .idea
 TEST.py
+*.egg-info
