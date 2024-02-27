@@ -1,5 +1,12 @@
+import os
+
 class SourceManager:
-    def __init__(self, filepath="sources"):
+    def __init__(self, filepath=None):
+        if filepath is None:
+            # プロジェクトのルートディレクトリを取得
+            project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            # ルートディレクトリにある 'sources' フォルダへの絶対パスを設定
+            filepath = os.path.join(project_root, "sources")
         self.filepath = filepath
         self.sources = {"tab1": {}, "tab2": {}, "tab3": {}}
 

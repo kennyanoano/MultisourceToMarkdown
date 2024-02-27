@@ -4,17 +4,20 @@ import sys
 import os
 import tkinter.simpledialog
 import json
-import ctypes #
+import ctypes
 from tkinterdnd2 import DND_FILES, TkinterDnD
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(True)
 except AttributeError:
-    pass  #
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(parent_dir)
+    pass
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(project_root)
+config_path = os.path.join(project_root, "configs", "application_config.json")
+sources_dir = os.path.join(project_root, "sources")
+converted_md_dir = os.path.join(project_root, "converted_md")
 from converter.KAno_convert_script import KAno_convert_script as KAno_run_conversion
 from ui.cleansing_rules_ui import CleansingRulesUI
-from ui.source_manager import SourceManager  #
+from ui.source_manager import SourceManager
 class FileConverterApp:
     def __init__(self):
         self.root = TkinterDnD.Tk()
@@ -81,9 +84,9 @@ class FileConverterApp:
     def open_md_folder(self):
         import subprocess
         import platform
-        tab_index = self.notebook.index("current")  #
-        folder_path = os.path.join(os.path.dirname(parent_dir), "converted_md", str(tab_index))
-        print (folder_path)
+        tab_index = self.notebook.index("current")
+        folder_path = os.path.join(converted_md_dir, str(tab_index))
+        print(folder_path)
         if platform.system() == "Windows":
             subprocess.Popen(f'explorer "{folder_path}"')
         elif platform.system() == "Darwin":  # macOS
@@ -99,22 +102,20 @@ class FileConverterApp:
             old_name = list(self.source_listboxes.keys())[tab_index]
             self.source_listboxes[new_name] = self.source_listboxes.pop(old_name)
             self.source_entries[new_name] = self.source_entries.pop(old_name)
-
     def save_tab_names(self):
         tab_names = [self.notebook.tab(i, "text") for i in range(self.notebook.index("end"))]
         config = {"tab_names": tab_names}
         self.save_config(config)
     def save_config(self, config):
-        with open("configs/application_config.json", "w") as config_file:
+        with open(config_path, "w") as config_file:
             json.dump(config, config_file, indent=4)
     def load_config(self):
         try:
-            with open("configs/application_config.json", "r") as config_file:
+            with open(config_path, "r") as config_file:
                 config = json.load(config_file)
                 return config
         except FileNotFoundError:
             return {}
-
     def KAno_process_source_name(self, source_name):
         if source_name.startswith('"') and source_name.endswith('"'):
             return source_name[1:-1]
@@ -224,7 +225,6 @@ class FileConverterApp:
                     print(f"path not found: {source_name}")
         except IndexError:
             print("not selected")
-
     def update_source_list(self, tab_index):
         try:
             source_listbox = self.source_listboxes[tab_index]
@@ -244,7 +244,7 @@ class FileConverterApp:
         for f in files:
             self.KAno_add_dropped_source(f)
     def KAno_add_dropped_source(self, file_path):
-        tab_index = self.notebook.index("current")  #
+        tab_index = self.notebook.index("current")
         source_name = os.path.basename(file_path)
         self.source_manager.add_or_update_source(tab_index, source_name, file_path)
         self.update_source_list(tab_index)

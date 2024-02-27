@@ -4,6 +4,7 @@ sources/*
 !sources/.gitkeep
 .cursorignore
 converted_md/*
+src/converter/converted_md/*
 !converted_md/.gitkeep
 __pycache__
 *.log
@@ -15,3 +16,4 @@ venv
 .idea
 TEST.py
 *.egg-info
+test.md

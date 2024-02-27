@@ -4,13 +4,18 @@ import sys
 import os
 import glob
 import ctypes
+
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(1)  # DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = 1
 except (AttributeError, OSError):
     pass  # Windows以外のOS、または対応していないWindowsバージョンでは何もしない
 
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(parent_dir)
+# プロジェクトのルートディレクトリを取得（srcフォルダの親ディレクトリ）
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# 'converted_md' フォルダへのパスを正しく設定
+converted_md_path = os.path.join(project_root, "converted_md")
+
 from converter.cleansing_rules import rules, CleansingRule, apply_cleansing_rule, load_rules, ruleFromText
 
 def get_rule_types():
@@ -92,7 +97,7 @@ class CleansingRulesUI:
     def apply_rule(self):
         selected_indices = self.rules_listbox.curselection()
         if not selected_indices:  # 何も選択されていない場合
-            md_files = glob.glob('converted_md/**/*.md', recursive=True)
+            md_files = glob.glob(os.path.join(converted_md_path, '**/*.md'), recursive=True)
             for file_path in md_files:
                 with open(file_path, 'r', encoding='utf-8') as file:
                     file_content = file.read()
@@ -105,7 +110,7 @@ class CleansingRulesUI:
             try:
                 rule_index = selected_indices[0]
                 selected_rule = self.rulesFromText[rule_index]
-                md_files = glob.glob('converted_md/**/*.md', recursive=True)
+                md_files = glob.glob(os.path.join(converted_md_path, '**/*.md'), recursive=True)
                 for file_path in md_files:
                     with open(file_path, 'r', encoding='utf-8') as file:
                         file_content = file.read()
@@ -119,7 +124,7 @@ class CleansingRulesUI:
     def apply_rule_to_tab(self, tab_index):
         folder_index = {1: '0', 2: '1', 3: '2'}[tab_index]  # タブのインデックスに応じてフォルダ名を変更
         selected_indices = self.rules_listbox.curselection()
-        md_files = glob.glob(f'converted_md/{folder_index}/*.md', recursive=True)
+        md_files = glob.glob(os.path.join(converted_md_path, f'{folder_index}/*.md'), recursive=True)
 
         if not selected_indices:  # 何も選択されていない場合、すべてのルールを適用
             for file_path in md_files:
@@ -145,7 +150,7 @@ class CleansingRulesUI:
                 print('Please select a rule to apply.')
 
     def save_rules(self):
-        with open('sourcerule.txt', 'w', encoding='utf-8') as file:  # UTF-8を指定
+        with open(sourcerule_path, 'w', encoding='utf-8') as file:  # UTF-8を指定
             for rule in self.rulesFromText:
                 condition = rule.condition if rule.condition is not None else 'None'
                 action = rule.action if rule.action is not None else 'None'

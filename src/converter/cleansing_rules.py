@@ -41,17 +41,22 @@ def apply_cleansing_rule(rule, text):
     else:
         return text
 
+import os
+
 def load_rules():
     global ruleFromText
     ruleFromText = []
+    # プロジェクトのルートディレクトリに基づいてファイルパスを設定
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file_path = os.path.join(base_dir, 'sourcerule.txt')
     try:
-        with open('sourcerule.txt', 'r', encoding='utf-8') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             for line in file:
                 rule_type, condition, action = line.strip().split(',')
                 ruleFromText.append(CleansingRule(rule_type, condition if condition != 'None' else None, action if action != 'None' else None))
     except FileNotFoundError:
-        with open('sourcerule.txt', 'w', encoding='utf-8') as file:  # sourcerule.txtが存在しない場合は、ファイルを作成する
+        with open(file_path, 'w', encoding='utf-8') as file:  # ファイルが存在しない場合は、正しいパスでファイルを作成する
             pass
-    print(f"Loaded {len(ruleFromText)} rules.")  # 読み込んだルールの数をログ出力
+    print(f"Loaded {len(ruleFromText)} rules.")
 
 load_rules()

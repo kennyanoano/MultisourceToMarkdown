@@ -11,6 +11,8 @@
   - `.gitignore`
   - `configs/`
     - `application_config.json`
+  - `sources/`
+  - `converted_md/`
   - `src/`
     - `converter/`
       - `__init__.py`
@@ -32,3 +34,5 @@
       - `file_converter_app.py`
       - `source_manager.py`
     - `main.py`
+  - `sourcerule.txt`
+

@@ -1,11 +1,14 @@
 import os
 
 def KAno_convert_script(file_path, file_type, tab_index):
-    output_dir = os.path.join(os.getcwd(), f"converted_md/{tab_index}")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # ルートディレクトリ基準でoutput_dirを設定
+    root_dir = os.path.abspath(os.path.join(script_dir, '..', '..'))
+    output_dir = os.path.join(root_dir, f"converted_md/{tab_index}")
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    sourcetextfolder = os.path.join(os.getcwd(), "sources")
+    sourcetextfolder = os.path.join(script_dir, "..", "..", "sources")
     memo_file_path = os.path.join(sourcetextfolder, f"Tab {tab_index + 1}.txt")
 
     memo_name = ""  # Initialize memo name
