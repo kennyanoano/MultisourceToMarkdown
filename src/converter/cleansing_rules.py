@@ -46,8 +46,8 @@ import os
 def load_rules():
     global ruleFromText
     ruleFromText = []
-    # プロジェクトのルートディレクトリに基づいてファイルパスを設定
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # プロジェクトのルートディレクトリに基づいてファイルパスを設定（修正前：base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))）
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     file_path = os.path.join(base_dir, 'sourcerule.txt')
     try:
         with open(file_path, 'r', encoding='utf-8') as file:

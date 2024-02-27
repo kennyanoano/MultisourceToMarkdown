@@ -150,6 +150,7 @@ class CleansingRulesUI:
                 print('Please select a rule to apply.')
 
     def save_rules(self):
+        sourcerule_path = os.path.join(project_root, 'sourcerule.txt')  # Correctly set the path to sourcerule.txt
         with open(sourcerule_path, 'w', encoding='utf-8') as file:  # UTF-8を指定
             for rule in self.rulesFromText:
                 condition = rule.condition if rule.condition is not None else 'None'
