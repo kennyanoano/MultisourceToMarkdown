@@ -1,3 +1,5 @@
+import os
+
 class CleansingRule:
     def __init__(self, rule_type, condition, action):
         self.rule_type = rule_type  # ルールの種類（例：'replace', 'remove_whitespace', 'remove_tag'）
@@ -7,7 +9,34 @@ class CleansingRule:
     def __str__(self):
         return f'CleansingRule(type={self.rule_type}, condition={self.condition}, action={self.action})'
 
-# クレンジングルールの例
+    @staticmethod
+    def split_file_by_tokens(file_path, token_limit=500):
+        import os
+        # ファイル名に既に分割パターンが含まれているかチェック
+        if '_partMKZ_' in file_path:
+            print(f"File {file_path} is already a part of a split. Skipping.")
+            return f"File {file_path} is already a part of a split. Skipping."
+
+        # ファイルサイズをチェック
+        if os.path.getsize(file_path) < token_limit * 10:
+            print("デバッグ")
+            print(file_path)
+            return f"File {file_path} is too small to split."
+
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+        tokens = content.split()
+        # 元のファイル名から最後の .md 拡張子を取り除く
+        base_file_path = file_path.rsplit('.md', 1)[0]
+        for i in range(0, len(tokens), token_limit):
+            part_tokens = tokens[i:i+token_limit]
+            part_content = ' '.join(part_tokens)
+            part_file_path = f"{base_file_path}_partMKZ_{i//token_limit}.md"
+            with open(part_file_path, 'w', encoding='utf-8') as part_file:
+                part_file.write(part_content)
+        os.remove(file_path)
+        return f"File {file_path} split into parts and saved as Markdown files."
+
 rules = [
     CleansingRule('replace', 'http://', 'https://'),
     CleansingRule('remove_whitespace', None, None),
@@ -15,10 +44,11 @@ rules = [
     CleansingRule('remove_before', 'SpecialMojiretsu', 'None'),
     CleansingRule('remove_after', 'SpecialMojiretsu2', 'None'),
     CleansingRule('remove_until_newline', 'SpecialMojiretsu2', 'None'),
-    CleansingRule('remove_empty_lines', None, None)  # 空っぽの行を削除するルールを追加
+    CleansingRule('remove_empty_lines', None, None)
+    #CleansingRule('split_file_by_tokens', None, None),  # ファイル分割処理をルールとして追加  #うまくいっていない partMKZが入っていたら処理しないようにしたいのだができてない
 ]
 
-def apply_cleansing_rule(rule, text):
+def apply_cleansing_rule(rule, text, file_path=None):
     if rule.rule_type == 'replace':
         return text.replace(rule.condition, rule.action)
     elif rule.rule_type == 'remove_whitespace':
@@ -38,10 +68,15 @@ def apply_cleansing_rule(rule, text):
     elif rule.rule_type == 'remove_empty_lines':
         import re
         return re.sub(r'^\s*$\n', '', text, flags=re.MULTILINE)  # 空っぽの行を削除
+    elif rule.rule_type == 'split_file_by_tokens':
+        if file_path:  # ファイルパスが提供されている場合のみ分割を実行
+            return CleansingRule.split_file_by_tokens(file_path)
+        else:
+            print("File path is required for 'split_file_by_tokens' rule.")
+            return text
     else:
         return text
 
-import os
 
 def load_rules():
     global ruleFromText

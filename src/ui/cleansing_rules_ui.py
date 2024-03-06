@@ -102,7 +102,7 @@ class CleansingRulesUI:
                 with open(file_path, 'r', encoding='utf-8') as file:
                     file_content = file.read()
                 for rule in self.rulesFromText:  # すべてのルールを適用
-                    file_content = apply_cleansing_rule(rule, file_content)
+                    file_content = apply_cleansing_rule(rule, file_content, file_path=file_path)  # ファイルパスを渡す
                 with open(file_path, 'w', encoding='utf-8') as file:
                     file.write(file_content)
             print(f'Cleansing applied to {len(md_files)} files using all rules.')
@@ -114,7 +114,7 @@ class CleansingRulesUI:
                 for file_path in md_files:
                     with open(file_path, 'r', encoding='utf-8') as file:
                         file_content = file.read()
-                    cleansed_content = apply_cleansing_rule(selected_rule, file_content)
+                    cleansed_content = apply_cleansing_rule(selected_rule, file_content, file_path=file_path)  # ファイルパスを渡す
                     with open(file_path, 'w', encoding='utf-8') as file:
                         file.write(cleansed_content)
                 print(f'Cleansing applied to {len(md_files)} files using selected rule.')
@@ -131,7 +131,7 @@ class CleansingRulesUI:
                 with open(file_path, 'r', encoding='utf-8') as file:
                     file_content = file.read()
                 for rule in self.rulesFromText:
-                    file_content = apply_cleansing_rule(rule, file_content)
+                    file_content = apply_cleansing_rule(rule, file_content, file_path=file_path)  # ファイルパスを渡す
                 with open(file_path, 'w', encoding='utf-8') as file:
                     file.write(file_content)
             print(f'Cleansing applied to {len(md_files)} files in {folder_index} using all rules.')
@@ -142,7 +142,7 @@ class CleansingRulesUI:
                     for file_path in md_files:
                         with open(file_path, 'r', encoding='utf-8') as file:
                             file_content = file.read()
-                        cleansed_content = apply_cleansing_rule(selected_rule, file_content)
+                        cleansed_content = apply_cleansing_rule(selected_rule, file_content, file_path=file_path)  # ファイルパスを渡す
                         with open(file_path, 'w', encoding='utf-8') as file:
                             file.write(cleansed_content)
                 print(f'Cleansing applied to {len(md_files)} files in {folder_index} using selected rules.')
